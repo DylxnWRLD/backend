@@ -1,0 +1,17 @@
+### Petición 1: CREAR (POST) un Plato (Agregar Producto)
+# Ejecuta esta petición primero para llenar la DB.
+
+POST http://localhost:8080/api/platos
+Content-Type: application/json
+
+{
+  "nombre": "Huevo con Jamón",
+  "descripcion": "Delicioso desayuno de huevo y jamón",
+  "precioBase": 50.00,
+  "disponible": true
+}
+
+### Petición 2: CONSULTAR (GET) el Catálogo Disponible (Página Principal)
+# Una vez que creaste el plato anterior, ejecuta esta para verlo.
+
+GET http://localhost:8080/api/platos/disponibles

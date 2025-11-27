@@ -15,7 +15,7 @@ public class PruebaController {
      */
     @GetMapping("/estado") 
     public String obtenerEstado() {
-        return "El Backend de Spring Boot está activo y funcionando.";
+        return "El Backend de Spring Boot está y funcionando.";
     }
 
     // AÑADE ESTE NUEVO ENDPOINT
