@@ -4,7 +4,7 @@ POST http://localhost:8080/api/usuarios/registro
 Content-Type: application/json
 
 {
-  "nombre": "Sofia García",
-  "email": "sofia.garcia@test.com",
-  "password": "miPassSeguro123"
+  "nombre": "Pedro",
+  "email": "pedro@gmail.com",
+  "password": "123"
 }

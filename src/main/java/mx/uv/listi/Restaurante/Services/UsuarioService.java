@@ -18,21 +18,16 @@ public class UsuarioService {
 
     // Registro
     public UsuarioResponse registrar(RegistroRequest request) {
-
         if (usuarioRepository.existsByEmail(request.email)) {
             throw new RuntimeException("El email ya está registrado");
         }
-
         String hash = BCrypt.hashpw(request.password, BCrypt.gensalt());
-
         Usuario usuario = new Usuario(
                 request.nombre,
                 request.email,
                 hash
         );
-
         usuarioRepository.save(usuario);
-
         return new UsuarioResponse(
                 usuario.getId(),
                 usuario.getNombre(),
@@ -42,14 +37,11 @@ public class UsuarioService {
 
     // Login
     public UsuarioResponse login(LoginRequest request) {
-
         Usuario usuario = usuarioRepository.findByEmail(request.email)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
         if (!BCrypt.checkpw(request.password, usuario.getPasswordHash())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
-
         return new UsuarioResponse(
                 usuario.getId(),
                 usuario.getNombre(),

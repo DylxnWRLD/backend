@@ -20,7 +20,7 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Se recomienda Long para ID de entidades, aunque Integer es posible
+    private Long id;
 
     @Column(nullable = false, length = 100)
     private String nombre;
@@ -29,7 +29,7 @@ public class Usuario {
     private String email;
 
     @Column(nullable = false)
-    private String passwordHash; // Se recomienda almacenar un hash de la contraseña
+    private String password;
 
     // Relación OneToMany con Pedido.
     // Mapea el lado "cliente" de la relación en Pedido.
@@ -39,15 +39,14 @@ public class Usuario {
     // Constructor vacío requerido por JPA
     public Usuario() {}
 
-    // Constructor con campos (opcional)
+    // Constructor con campos
     public Usuario(String nombre, String email, String passwordHash) {
         this.nombre = nombre;
         this.email = email;
-        this.passwordHash = passwordHash;
+        this.password = passwordHash;
     }
 
     // --- Getters y Setters ---
-
     public Long getId() {
         return id;
     }
@@ -73,11 +72,11 @@ public class Usuario {
     }
 
     public String getPasswordHash() {
-        return passwordHash;
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPasswordHash(String password) {
+        this.password = password;
     }
 
     public List<Pedido> getPedidos() {
