@@ -1,19 +1,39 @@
-# Dockerfile optimizado para Desarrollo (Ejecución Directa de Código Fuente)
-# Usa Maven con JDK 17
-FROM maven:3.9-eclipse-temurin-17
+# ----------------------------------------------------
+# ETAPA 1: BUILDER (Compilación del JAR)
+# ----------------------------------------------------
+# Usa una imagen completa (Maven y JDK 17) para la compilación.
+FROM maven:3.9-eclipse-temurin-17 AS builder
+
+# Directorio de trabajo dentro del contenedor.
 WORKDIR /app
 
-# Copia solo el archivo POM. Esto se hace para descargar las dependencias y 
-# almacenarlas en el caché del contenedor/host. El código fuente se monta por volumen.
+# Copia solo el archivo POM. Se hace primero para aprovechar el caché de Docker 
+# si solo cambian las dependencias, no el código fuente.
 COPY pom.xml .
 
-# Descarga las dependencias para evitar hacerlo en cada ejecución del contenedor.
+# Descarga todas las dependencias.
 RUN mvn dependency:go-offline
 
-# El código fuente (incluida la carpeta 'src') se montará a través de un volumen (./backend:/app).
+# Copia el código fuente.
+COPY src /app/src
+
+# Construye la aplicación. El resultado es el archivo JAR en /app/target/
+RUN mvn clean package -DskipTests
+
+# ----------------------------------------------------
+# ETAPA 2: RUNNER (Ejecución Final)
+# ----------------------------------------------------
+# Usa una imagen base más ligera (solo JRE 17) para el entorno de ejecución.
+FROM eclipse-temurin:17-jre-focal
+
+# Define la ubicación del JAR compilado.
+ARG JAR_FILE=target/Restaurante-0.0.1-SNAPSHOT.jar 
+
+# Copia el JAR compilado desde la etapa 'builder' a la imagen final.
+# Lo renombramos a app.jar para simplificar el comando de ejecución.
+COPY --from=builder /app/${JAR_FILE} /app/app.jar
 
 EXPOSE 8080
 
-# El comando ENTRYPOINT/CMD ejecuta la aplicación Spring Boot directamente desde la fuente.
-# Esto es ideal para desarrollo con recarga en caliente (hot reload).
-CMD ["mvn", "spring-boot:run"]
+# El punto de entrada para la aplicación: ejecuta el JAR.
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

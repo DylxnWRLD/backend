@@ -5,7 +5,7 @@ POST http://localhost:8080/api/platos
 Content-Type: application/json
 
 {
-  "nombre": "Huevo con Jamón",
+  "nombre": "Huevo con Jamón 2",
   "descripcion": "Delicioso desayuno de huevo y jamón",
   "precioBase": 50.00,
   "disponible": true
