@@ -18,6 +18,11 @@ public class PruebaController {
         return "El Backend de Spring Boot está y funcionando.";
     }
 
+    @GetMapping("/estado1") 
+    public String obtenerEstado1() {
+        return "El Backend de Spring Boot está y funcionando 1.";
+    }
+
     // AÑADE ESTE NUEVO ENDPOINT
     /**
      * Nuevo Endpoint: GET http://localhost:8080/api/prueba/version
