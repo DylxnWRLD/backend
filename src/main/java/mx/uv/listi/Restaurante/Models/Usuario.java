@@ -29,7 +29,7 @@ public class Usuario {
     private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String passwordHash;
 
     // Relación OneToMany con Pedido.
     // Mapea el lado "cliente" de la relación en Pedido.
@@ -43,7 +43,7 @@ public class Usuario {
     public Usuario(String nombre, String email, String passwordHash) {
         this.nombre = nombre;
         this.email = email;
-        this.password = passwordHash;
+        this.passwordHash = passwordHash;
     }
 
     // --- Getters y Setters ---
@@ -72,11 +72,11 @@ public class Usuario {
     }
 
     public String getPasswordHash() {
-        return password;
+        return passwordHash;
     }
 
-    public void setPasswordHash(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public List<Pedido> getPedidos() {
