@@ -28,7 +28,7 @@ public class Usuario {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password_hash", nullable = false) 
     private String passwordHash;
 
     // Relación OneToMany con Pedido.
@@ -37,7 +37,8 @@ public class Usuario {
     private List<Pedido> pedidos;
 
     // Constructor vacío requerido por JPA
-    public Usuario() {}
+    public Usuario() {
+    }
 
     // Constructor con campos
     public Usuario(String nombre, String email, String passwordHash) {
