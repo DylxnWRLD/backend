@@ -1,5 +1,8 @@
 package mx.uv.listi.Restaurante.Services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -77,5 +80,51 @@ public class UsuarioService {
                 usuario.getNombre(),
                 usuario.getEmail()
         );
+    }
+
+    /**
+     * Lista todos los usuarios registrados en el sistema. 
+     * Solo para uso de administrador.
+     * * @return Una lista de UsuarioResponse con los datos de todos los usuarios.
+     */
+    public List<UsuarioResponse> listarTodos() {
+        return usuarioRepository.findAll().stream()
+                .map(u -> new UsuarioResponse(u.getId(), u.getNombre(), u.getEmail()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Actualiza la información de un usuario existente. 
+     * La contraseña no se actualiza a través de este método.
+     * * @param id El ID del usuario a actualizar.
+     * @param request Datos a actualizar (nombre, email).
+     * @return UsuarioResponse con los datos actualizados.
+     * @throws RuntimeException si el usuario no es encontrado.
+     */
+    public UsuarioResponse actualizar(Long id, RegistroRequest request) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado para actualizar"));
+
+        // Nota: Por seguridad, evitamos actualizar el password en este endpoint
+        usuario.setNombre(request.nombre);
+        usuario.setEmail(request.email); // Se puede añadir validación de email único aquí
+
+        Usuario usuarioActualizado = usuarioRepository.save(usuario);
+        return new UsuarioResponse(
+                usuarioActualizado.getId(),
+                usuarioActualizado.getNombre(),
+                usuarioActualizado.getEmail()
+        );
+    }
+    
+    /**
+     * Elimina un usuario por su ID.
+     * * @param id El ID del usuario a eliminar.
+     */
+    public void eliminar(Long id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new RuntimeException("Usuario no encontrado para eliminar");
+        }
+        usuarioRepository.deleteById(id);
     }
 }

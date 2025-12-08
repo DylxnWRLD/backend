@@ -5,6 +5,8 @@ import mx.uv.listi.Restaurante.DTOs.RegistroRequest;
 import mx.uv.listi.Restaurante.DTOs.LoginRequest;
 import mx.uv.listi.Restaurante.DTOs.UsuarioResponse;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,5 +55,37 @@ public class UsuarioController {
     @PostMapping("/login")
     public UsuarioResponse login(@RequestBody LoginRequest request) {
         return usuarioService.login(request);
+    }
+
+    /**
+     * Obtiene la lista completa de usuarios. Requiere permisos de administrador.
+     * Mapeado a GET /api/usuarios
+     * @return Lista de todos los usuarios (DTOs).
+     */
+    @GetMapping
+    public List<UsuarioResponse> listarTodos() {
+        return usuarioService.listarTodos();
+    }
+    
+    /**
+     * Actualiza la información de un usuario existente por su ID.
+     * Mapeado a PUT /api/usuarios/{id}
+     * @param id ID del usuario a actualizar.
+     * @param request Datos a modificar (nombre, email).
+     * @return El usuario con los datos actualizados.
+     */
+    @PutMapping("/{id}")
+    public UsuarioResponse actualizar(@PathVariable Long id, @RequestBody RegistroRequest request) {
+        return usuarioService.actualizar(id, request);
+    }
+    
+    /**
+     * Elimina un usuario por su ID.
+     * Mapeado a DELETE /api/usuarios/{id}
+     * @param id ID del usuario a eliminar.
+     */
+    @DeleteMapping("/{id}")
+    public void eliminar(@PathVariable Long id) {
+        usuarioService.eliminar(id);
     }
 }
