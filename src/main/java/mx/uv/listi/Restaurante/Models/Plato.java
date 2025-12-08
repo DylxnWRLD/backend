@@ -1,5 +1,6 @@
 package mx.uv.listi.Restaurante.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,6 +42,7 @@ public class Plato {
     // El atributo "mappedBy" debe coincidir con el nombre del campo en
     // PedidoDetalle.
     @OneToMany(mappedBy = "plato", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<PedidoDetalle> detalles = new HashSet<>();
 
     public Plato() {

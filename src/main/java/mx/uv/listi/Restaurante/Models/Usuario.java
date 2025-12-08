@@ -1,5 +1,6 @@
 package mx.uv.listi.Restaurante.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +35,7 @@ public class Usuario {
     // Relación OneToMany con Pedido.
     // Mapea el lado "cliente" de la relación en Pedido.
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Pedido> pedidos;
 
     // Constructor vacío requerido por JPA
