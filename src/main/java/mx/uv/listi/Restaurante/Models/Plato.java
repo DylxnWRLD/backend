@@ -31,10 +31,10 @@ public class Plato {
     private String descripcion;
 
     @Column(nullable = false, name = "precio_base")
-    private Double precioBase; // El precio actual del plato
+    private Double precioBase;
 
     @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
-    private Boolean disponible = true; // Indica si el plato está disponible o no
+    private Boolean disponible = true;
 
     // Relación OneToMany con PedidoDetalle
     // Mapea el lado "plato" de la relación en PedidoDetalle.
@@ -43,18 +43,15 @@ public class Plato {
     @OneToMany(mappedBy = "plato", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PedidoDetalle> detalles = new HashSet<>();
 
-    // Constructor vacío requerido por JPA
     public Plato() {
     }
 
-    // Constructor con campos (opcional)
     public Plato(String nombre, String descripcion, Double precioBase) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precioBase = precioBase;
     }
 
-    // --- Getters y Setters ---
 
     public Long getId() {
         return id;
@@ -104,7 +101,8 @@ public class Plato {
         this.detalles = detalles;
     }
 
-    // Métodos de conveniencia para manejar la colección de detalles
+
+    
     public void addDetalle(PedidoDetalle detalle) {
         this.detalles.add(detalle);
         detalle.setPlato(this);

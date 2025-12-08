@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping; // Importar para el 
 import org.springframework.web.bind.annotation.RequestBody; // Importar para recibir el JSON
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 import java.util.List;
@@ -47,7 +50,6 @@ public class PlatoController {
         return platoService.obtenerPlatosDisponibles();
     }
 
-    // --- 2. Método para Crear Platos (POST) ---
     
     /**
      * Endpoint para crear un nuevo Plato en la base de datos.
@@ -57,12 +59,30 @@ public class PlatoController {
      */
     @PostMapping
     public ResponseEntity<Plato> crearPlato(@RequestBody Plato plato) {
-        // Llama al servicio para ejecutar la lógica y guardar en la DB
         Plato nuevoPlato = platoService.guardarPlato(plato);
-        
-        // Retorna el plato creado y el código de estado HTTP 201 (Created)
         return new ResponseEntity<>(nuevoPlato, HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Plato> actualizarPlato(@PathVariable Long id, @RequestBody Plato plato) {
+        // Buscamos si existe
+        return platoService.obtenerPlatoPorId(id)
+                .map(platoExistente -> {
+                    plato.setId(id); // Forzamos que el ID del objeto coincida con la URL
+                    Plato actualizado = platoService.guardarPlato(plato);
+                    return new ResponseEntity<>(actualizado, HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
     
-    // NOTA: Aquí irían otros métodos (PUT/DELETE) para la administración del menú.
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarPlato(@PathVariable Long id) {
+        if (platoService.obtenerPlatoPorId(id).isPresent()) {
+            platoService.eliminarPlato(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204: Éxito sin contenido
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

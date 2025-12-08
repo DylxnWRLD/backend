@@ -15,11 +15,9 @@ import java.util.Optional;
 @Service
 public class PlatoService {
 
-    // Inyección de dependencia del Repository para acceder a la base de datos
     @Autowired
     private PlatoRepository platoRepository;
 
-    // --- Métodos de Lectura (Consulta) ---
 
     /**
      * Obtiene todos los platos en la base de datos.
@@ -43,7 +41,6 @@ public class PlatoService {
         return platoRepository.findById(id);
     }
     
-    // --- Métodos de Escritura (CRUD) ---
     
     /**
      * Crea o actualiza un plato.

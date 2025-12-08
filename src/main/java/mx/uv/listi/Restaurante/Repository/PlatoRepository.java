@@ -8,4 +8,6 @@ public interface PlatoRepository extends JpaRepository<Plato, Long> {
     
     // Método para buscar platos disponibles
     List<Plato> findByDisponibleTrue();
+
+    
 }
