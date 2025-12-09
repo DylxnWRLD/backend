@@ -13,10 +13,6 @@ import jakarta.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Entidad que representa un plato de comida disponible en el restaurante.
- * Tiene una relación Muchos a Muchos con Pedido a través de PedidoDetalle.
- */
 @Entity
 @Table(name = "platos")
 public class Plato {
@@ -37,10 +33,6 @@ public class Plato {
     @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     private Boolean disponible = true;
 
-    // Relación OneToMany con PedidoDetalle
-    // Mapea el lado "plato" de la relación en PedidoDetalle.
-    // El atributo "mappedBy" debe coincidir con el nombre del campo en
-    // PedidoDetalle.
     @OneToMany(mappedBy = "plato", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<PedidoDetalle> detalles = new HashSet<>();
@@ -53,7 +45,6 @@ public class Plato {
         this.descripcion = descripcion;
         this.precioBase = precioBase;
     }
-
 
     public Long getId() {
         return id;
@@ -103,8 +94,6 @@ public class Plato {
         this.detalles = detalles;
     }
 
-
-    
     public void addDetalle(PedidoDetalle detalle) {
         this.detalles.add(detalle);
         detalle.setPlato(this);

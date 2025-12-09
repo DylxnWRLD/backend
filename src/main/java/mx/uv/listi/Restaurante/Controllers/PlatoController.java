@@ -19,18 +19,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
-/**
- * Controlador REST para gestionar las operaciones relacionadas con los Platos (productos).
- * Mapeo base: http://localhost:8080/api/platos
- */
 @RestController
 @RequestMapping("/api/platos") 
+
 public class PlatoController {
 
     @Autowired
     private PlatoService platoService;
-
-    // --- 1. Métodos de Consulta (GET) ---
 
     /**
      * Endpoint para obtener la lista de *todos* los platos.
@@ -50,7 +45,6 @@ public class PlatoController {
         return platoService.obtenerPlatosDisponibles();
     }
 
-    
     /**
      * Endpoint para crear un nuevo Plato en la base de datos.
      * Mapeado a: POST /api/platos
@@ -63,23 +57,35 @@ public class PlatoController {
         return new ResponseEntity<>(nuevoPlato, HttpStatus.CREATED);
     }
 
+    /**
+     * Endpoint para actualizar un plato existente.
+     * Mapeado a: PUT /api/platos/{id}
+     * @param id El ID del plato a actualizar.
+     * @param plato El objeto Plato con los datos actualizados.
+     * @return El plato actualizado o un código 404 si no se encuentra.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Plato> actualizarPlato(@PathVariable Long id, @RequestBody Plato plato) {
-        // Buscamos si existe
         return platoService.obtenerPlatoPorId(id)
                 .map(platoExistente -> {
-                    plato.setId(id); // Forzamos que el ID del objeto coincida con la URL
+                    plato.setId(id);
                     Plato actualizado = platoService.guardarPlato(plato);
                     return new ResponseEntity<>(actualizado, HttpStatus.OK);
                 })
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     
+    /**
+     * Endpoint para eliminar un plato por su ID.
+     * Mapeado a: DELETE /api/platos/{id}
+     * @param id El ID del plato a eliminar.
+     * @return Código 204 si se elimina, 404 si no se encuentra.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarPlato(@PathVariable Long id) {
         if (platoService.obtenerPlatoPorId(id).isPresent()) {
             platoService.eliminarPlato(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204: Éxito sin contenido
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
