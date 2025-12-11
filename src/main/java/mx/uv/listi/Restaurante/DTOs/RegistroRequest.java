@@ -7,7 +7,7 @@ package mx.uv.listi.Restaurante.DTOs;
 public class RegistroRequest {
 
     /**
-     * Nombre completo del usuario que se desea registrar.
+     * Nombre del usuario que se desea registrar.
      */
     public String nombre;
 

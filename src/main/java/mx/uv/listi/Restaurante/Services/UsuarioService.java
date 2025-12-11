@@ -39,18 +39,13 @@ public class UsuarioService {
         if (usuarioRepository.existsByEmail(request.email)) {
             throw new RuntimeException("El email ya está registrado");
         }
-
-        // Encriptar contraseña
         String hash = BCrypt.hashpw(request.password, BCrypt.gensalt());
-
         Usuario usuario = new Usuario(
                 request.nombre,
                 request.email,
                 hash
         );
-
         usuarioRepository.save(usuario);
-
         return new UsuarioResponse(
                 usuario.getId(),
                 usuario.getNombre(),
@@ -67,14 +62,11 @@ public class UsuarioService {
      * @throws RuntimeException si el usuario no existe o la contraseña es incorrecta.
      */
     public UsuarioResponse login(LoginRequest request) {
-        Usuario usuario = usuarioRepository.findByEmail(request.email)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        // Validar contraseña
+        Usuario usuario = usuarioRepository.findByEmail(request.email).
+            orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         if (!BCrypt.checkpw(request.password, usuario.getPasswordHash())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
-
         return new UsuarioResponse(
                 usuario.getId(),
                 usuario.getNombre(),

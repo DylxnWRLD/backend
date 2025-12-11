@@ -12,15 +12,14 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 /**
- * Entidad que representa a un usuario o cliente del restaurante dentro del sistema.
+ * Entidad que representa a un usuario del restaurante dentro del sistema.
  */
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
 
     /**
-     * Identificador único del usuario. Se genera automáticamente mediante estrategia
-     * de identidad.
+     * Identificador único del usuario.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +39,7 @@ public class Usuario {
     private String email;
 
     /**
-     * Hash de la contraseña del usuario. Se almacena de forma segura y no en texto plano.
+     * Hash de la contraseña del usuario.
      */
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
@@ -67,7 +66,7 @@ public class Usuario {
      *
      * @param nombre nombre del usuario.
      * @param email correo electrónico del usuario.
-     * @param passwordHash hash seguro de la contraseña.
+     * @param passwordHash contraseña.
      */
     public Usuario(String nombre, String email, String passwordHash) {
         this.nombre = nombre;

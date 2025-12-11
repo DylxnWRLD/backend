@@ -31,7 +31,7 @@ public class UsuarioController {
      */
     @GetMapping("/test")
     public String probarAcceso() {
-        return "¡El controlador de Usuarios está vivo!";
+        return "Funciona";
     }
 
     /**
